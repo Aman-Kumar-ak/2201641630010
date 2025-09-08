@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Container, Tabs, Tab, Box, Typography } from '@mui/material'
+import { Container, Tabs, Tab, Box, Typography, CssBaseline, ThemeProvider, createTheme } from '@mui/material'
 import ShortenerPage from './pages/ShortenerPage'
 import StatisticsPage from './pages/StatisticsPage'
 
@@ -17,18 +17,28 @@ export default function App() {
     setTab(v)
     window.location.hash = v === 1 ? '#stats' : '#shorten'
   }
+  const theme = createTheme({
+    palette: {
+      primary: { main: '#1976d2' },
+      secondary: { main: '#0288d1' },
+      background: { default: '#f7f9fc' }
+    }
+  })
   return (
-    <Container maxWidth="md" style={{ paddingTop: 24, paddingBottom: 24 }}>
-      <Typography variant="h4" gutterBottom>URL Shortener</Typography>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs value={tab} onChange={onChange}>
-          <Tab label="Shorten" />
-          <Tab label="Statistics" />
-        </Tabs>
-      </Box>
-      <Box hidden={tab !== 0} mt={2}><ShortenerPage /></Box>
-      <Box hidden={tab !== 1} mt={2}><StatisticsPage /></Box>
-    </Container>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Container maxWidth="md" style={{ paddingTop: 24, paddingBottom: 24 }}>
+        <Typography variant="h4" gutterBottom color="primary">URL Shortener</Typography>
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <Tabs value={tab} onChange={onChange} textColor="primary" indicatorColor="primary">
+            <Tab label="Shorten" />
+            <Tab label="Statistics" />
+          </Tabs>
+        </Box>
+        <Box hidden={tab !== 0} mt={2}><ShortenerPage /></Box>
+        <Box hidden={tab !== 1} mt={2}><StatisticsPage /></Box>
+      </Container>
+    </ThemeProvider>
   )
 }
 

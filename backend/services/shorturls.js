@@ -25,6 +25,13 @@ function createShort({ url, validity, shortcode }) {
   const minutes = validity == null ? 30 : Number.parseInt(validity, 10);
   if (!Number.isFinite(minutes) || minutes <= 0) return { error: 'invalid validity', code: 400 };
 
+  // If a non-expired record already exists for this URL, return it
+  for (const [code, rec] of store.urls.entries()) {
+    if (rec.url === url && rec.expiresAt > new Date()) {
+      return { code, expiresAt: rec.expiresAt, existing: true };
+    }
+  }
+
   let code = shortcode ? String(shortcode) : generateCode();
   if (!/^[a-zA-Z0-9_-]{4,16}$/.test(code)) return { error: 'invalid shortcode', code: 400 };
   if (store.urls.has(code) && !shortcode) code = ensureUnique(code);

@@ -46,31 +46,31 @@ export default function ShortenerPage() {
 
   return (
     <Box>
-      <Typography variant="subtitle1">Enter up to 5 URLs</Typography>
+      <Typography variant="subtitle1" color="text.secondary">Enter up to 5 URLs</Typography>
       {rows.map((row, i) => (
-        <Grid container spacing={1} key={i} sx={{ mt: 1 }}>
+        <Grid container spacing={2} key={i} sx={{ mt: 1, p: 1, borderRadius: 1, backgroundColor: 'white', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
           <Grid item xs={12} md={6}>
-            <TextField fullWidth label="Original URL" value={row.url} onChange={e=>update(i,'url',e.target.value)} />
+            <TextField fullWidth label="Original URL" placeholder="https://example.com" value={row.url} onChange={e=>update(i,'url',e.target.value)} />
           </Grid>
           <Grid item xs={6} md={2}>
-            <TextField fullWidth label="Validity (min)" value={row.validity} onChange={e=>update(i,'validity',e.target.value)} />
+            <TextField fullWidth label="Validity (min)" placeholder="30" value={row.validity} onChange={e=>update(i,'validity',e.target.value)} />
           </Grid>
           <Grid item xs={6} md={2}>
-            <TextField fullWidth label="Shortcode (opt)" value={row.shortcode} onChange={e=>update(i,'shortcode',e.target.value)} />
+            <TextField fullWidth label="Shortcode (opt)" placeholder="my-custom-code" value={row.shortcode} onChange={e=>update(i,'shortcode',e.target.value)} />
           </Grid>
           <Grid item xs={12} md={2}>
-            <Button color="error" onClick={() => removeRow(i)} disabled={rows.length === 1}>Delete Row</Button>
+            <Button color="error" variant="outlined" onClick={() => removeRow(i)} disabled={rows.length === 1}>Delete Row</Button>
           </Grid>
         </Grid>
       ))}
       <Box sx={{ mt: 1 }}>
-        <Button onClick={addRow} disabled={rows.length>=5}>Add Row</Button>
+        <Button variant="outlined" onClick={addRow} disabled={rows.length>=5}>Add Row</Button>
         <Button variant="contained" onClick={submit} disabled={loading} sx={{ ml: 1 }}>Shorten</Button>
       </Box>
 
       <Box sx={{ mt: 3 }}>
         {results.map((r, idx) => (
-          <Box key={idx} sx={{ mb: 1 }}>
+          <Box key={idx} sx={{ mb: 1, p: 1, borderRadius: 1, backgroundColor: 'white', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
             {r.error ? (
               <Typography color="error">{r.error}</Typography>
             ) : (

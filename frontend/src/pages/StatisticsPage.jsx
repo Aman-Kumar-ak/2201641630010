@@ -33,12 +33,12 @@ export default function StatisticsPage() {
 
   return (
     <Box>
-      <Typography variant="subtitle1">Recently created short links</Typography>
+      <Typography variant="subtitle1" color="text.secondary">Recently created short links</Typography>
       {error && <Typography color="error" sx={{ mt: 1 }}>{error}</Typography>}
       <Box sx={{ mt: 2 }}>
         {items.length === 0 && <Typography>No items yet. Create some on the Shorten tab.</Typography>}
         {items.map(item => (
-          <Accordion key={item.code} onChange={(e, expanded) => { if (expanded && !item.details) loadDetails(item.code) }}>
+          <Accordion key={item.code} onChange={(e, expanded) => { if (expanded && !item.details) loadDetails(item.code) }} sx={{ backgroundColor: 'white', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <Typography>{item.index}. <Link href={item.shortLink} target="_blank" rel="noreferrer">{item.shortLink}</Link> — Expires: {item.expiry} — <span style={{ marginLeft: 8, color: '#1976d2', cursor: 'pointer' }} onClick={async (e)=>{ e.stopPropagation(); try { await deleteShort(item.code); setItems(list => list.filter(x => x.code !== item.code).map((x, i) => ({ ...x, index: i + 1 }))); await sendLog({ level: 'info', pkg: 'page', message: `deleted:${item.code}` }) } catch (err) { setError(err.message) } }}>Delete</span></Typography>
             </AccordionSummary>
@@ -46,12 +46,14 @@ export default function StatisticsPage() {
               {item.details ? (
                 <Box>
                   <Typography>Total Clicks: {item.details.totalClicks}</Typography>
-                  <Typography>Original: {item.details.original.url}</Typography>
+                  <Typography>
+                    Original: <Link href={item.details.original.url} target="_blank" rel="noreferrer">{item.details.original.url}</Link>
+                  </Typography>
                   <Typography>Created: {new Date(item.details.original.createdAt).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}</Typography>
                   <Typography>Expiry: {new Date(item.details.original.expiry).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}</Typography>
                   <Box sx={{ mt: 1 }}>
                     {item.details.clicks.map((c,i)=>(
-                      <Typography key={i}>{new Date(c.ts).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })} | {c.referrer} | {c.location}</Typography>
+                      <Typography key={i}>{new Date(c.ts).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}</Typography>
                     ))}
                   </Box>
                 </Box>
@@ -65,5 +67,3 @@ export default function StatisticsPage() {
     </Box>
   )
 }
-
-

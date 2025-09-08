@@ -14,8 +14,9 @@ router.post('/', async (req, res, next) => {
     }
     const base = `${req.protocol}://${req.get('host')}`;
     const shortLink = `${base}/${result.code}`;
-    await log('backend','info','service',`created ${result.code}`);
-    return res.status(201).json({ shortLink, expiry: result.expiresAt.toISOString() });
+    await log('backend','info','service',`${result.existing ? 'reused' : 'created'} ${result.code}`);
+    const status = result.existing ? 200 : 201;
+    return res.status(status).json({ shortLink, expiry: result.expiresAt.toISOString(), existing: !!result.existing });
   } catch (e) { next(e); }
 });
 
