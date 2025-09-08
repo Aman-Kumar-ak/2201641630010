@@ -56,7 +56,7 @@ export default function ShortenerPage() {
             <TextField fullWidth label="Validity (min)" placeholder="30" value={row.validity} onChange={e=>update(i,'validity',e.target.value)} />
           </Grid>
           <Grid item xs={6} md={2}>
-            <TextField fullWidth label="Shortcode (opt)" placeholder="my-custom-code" value={row.shortcode} onChange={e=>update(i,'shortcode',e.target.value)} />
+            <TextField fullWidth label="Shortcode" placeholder="Custom code" value={row.shortcode} onChange={e=>update(i,'shortcode',e.target.value)} />
           </Grid>
           <Grid item xs={12} md={2}>
             <Button color="error" variant="outlined" onClick={() => removeRow(i)} disabled={rows.length === 1}>Delete Row</Button>
